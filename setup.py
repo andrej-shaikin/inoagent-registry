@@ -4,7 +4,7 @@ setup(
     name='inoagent-control',
     version='1.0.0',
     packages=[
-        'inoagent_control'
+        'inoagent'
     ],
     python_requires='>=3.10',
     url='https://gitlab.com/kiwib/inoagent-control',
