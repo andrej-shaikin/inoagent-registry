@@ -25,7 +25,7 @@ def _download_actual_inoagent_registry_file_by_search_date(search_date: date | N
         verify=False,
     )
     if resp.status_code == 404:
-        raise RegistryFileNotFoundException(f"Не удалось найти файл реестра иноагентов на {search_date}")
+        raise RegistryFileNotFoundException(f"Registry file was not found on the requested date {search_date}")
     return BytesIO(resp.content)
 
 
