@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(
-    name='inoagent-control',
+    name='inoagent-registry',
     version='1.0.0',
     packages=[
         'inoagent'
