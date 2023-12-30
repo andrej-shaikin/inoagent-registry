@@ -1,8 +1,10 @@
+import re
 from collections.abc import Iterable
 from datetime import date, datetime
 from io import BytesIO
 
 import httpx
+from bs4 import BeautifulSoup, Tag
 from pdfplumber.pdf import PDF
 
 from .dto import InoAgentInformationDto
@@ -11,6 +13,7 @@ from .utils import parse_actual_inoagent_registry_file_page
 
 __all__ = [
     "get_ino_agent_registry_file_by_search_date",
+    "get_actual_inoagent_registry_file_date",
 ]
 
 
@@ -27,6 +30,21 @@ def _download_actual_inoagent_registry_file_by_search_date(search_date: date | N
     if resp.status_code == 404:
         raise RegistryFileNotFoundException(f"Registry file was not found on the requested date {search_date}")
     return BytesIO(resp.content)
+
+
+def get_actual_inoagent_registry_file_date() -> date:
+    """Get actual inoagent registry file date."""
+    resp = httpx.get(
+        url="https://minjust.gov.ru/ru/activity/directions/998/",
+        verify=False,
+    )
+    if resp.status_code != 200:
+        raise ValueError
+    soup = BeautifulSoup(resp.content, "lxml")
+    tag: None | Tag = soup.select_one("#section-description > div > ul > li:nth-child(2) > a")
+    if tag is None:
+        raise ValueError
+    return datetime.strptime(re.search(r"\d{8}", tag.get("href")).group(0), "%d%m%Y").date()
 
 
 def get_ino_agent_registry_file_by_search_date(search_date: date | None = None) -> Iterable[InoAgentInformationDto]:

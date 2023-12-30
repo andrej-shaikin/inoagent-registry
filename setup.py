@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='inoagent-registry',
-    version='1.0.1',
+    version='1.0.2',
     packages=[
         'inoagent'
     ],
@@ -15,5 +15,7 @@ setup(
     requires=[
         "httpx",
         "pydash",
+        "beautifulsoup4",
+        "lxml",
     ],
 )
